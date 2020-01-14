@@ -19,8 +19,9 @@ RUN mkdir -p /srv/sbf /var/log/sbfspot.3 /usr/local/bin/sbfspot.3 && \
     tar -xf /srv/sbf/sbf.tar.gz -C /srv/sbf --strip-components=1 && \
     make -j$(nproc) -C /srv/sbf/SBFspot sqlite && \
     make -j$(nproc) -C /srv/sbf/SBFspot install_sqlite && \
-    cp /usr/local/bin/sbfspot.3/SBFspot.default.cfg /usr/local/bin/sbfspot.3/SBFspot.cfg && \
     rm -rf /srv/sbf
+
+COPY ./sbfspot/SBFspot.cfg /usr/local/bin/sbfspot.3/SBFspot.cfg
 
 EXPOSE 5000
 CMD SMA_SBFPATH=/usr/local/bin/sbfspot.3/SBFspot bundle exec unicorn -c unicorn.conf
