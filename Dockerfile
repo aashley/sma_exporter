@@ -3,6 +3,7 @@ FROM ubuntu:18.04
 ARG sbfspot_version=3.6.0
 
 RUN apt-get update && apt-get install -y \
+        git \
         libbluetooth3 \
         libboost-date-time1.65.1 \
         libboost-system1.65.1 \
@@ -20,7 +21,6 @@ RUN set -xe \
     && buildDeps=" \
         build-essential \
         curl \
-        git \
         libbluetooth-dev \
         libboost-date-time-dev \
         libboost-system-dev \
