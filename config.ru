@@ -7,18 +7,19 @@ configFile = File.join(
     File.dirname(ENV.fetch('SMA_SBFPATH')),
     'SBFspot.cfg'
 )
+data = File.binread(configFile)
 
 if ENV['SMA_ADDRESS']
-	data = File.binread(configFile)
 	data[/IP_Address=(.+)$/, 1] = ENV['SMA_ADDRESS']
-	File.binwrite(configFile, data)
+end
+if ENV['SMA_PASSWORD']
+    data[/Password=(.+)$/, 1] = ENV['SMA_PASSWORD']
+end
+if ENV['TZ']
+    data[/Timezone=(.+)$/, 1] = ENV['TZ']
 end
 
-if ENV['SMA_PASSWORD']
-    data = File.binread(configFile)
-    data[/Password=(.+)$/, 1] = ENV['SMA_PASSWORD']
-    File.binwrite(configFile, data)
-end
+File.binwrite(configFile, data)
 
 use Rack::Deflater, if: ->(_, _, _, body) { body.any? && body[0].length > 512 }
 use SmaExporter::Rack
